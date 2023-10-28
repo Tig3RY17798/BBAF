@@ -9,7 +9,7 @@ local AFStat = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local TextLabel = Instance.new("TextLabel")
 local UICorner = Instance.new("UICorner")
-local status = Instance.new("TextLabel")
+local status = Instance.new("TextButton")
 
 --Properties:
 
@@ -128,6 +128,26 @@ local function ZZFYJWO_fake_script() -- Frame.LocalScript
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(47, 4, -1205)
 						turn2 = false
 					end
+				end
+			end
+		end
+	end)
+
+	--funkcia na spustenie pre Android
+	script.Parent.status.MouseButton1Click:Connect(function()
+		if turn == false then
+			turn = true
+			game.SoundService:FindFirstChild("SoundNotification"):Play()
+			script.Parent.status.Text = "True"
+		elseif turn == true then
+			turn = false
+			game.SoundService:FindFirstChild("SoundNtfFinish"):Play()
+			script.Parent.status.Text = "False"
+			game.Workspace:FindFirstChild("EndPart"):Destroy()
+			if game.Players.LocalPlayer.PlayerGui.Headings.Frame.Tweet.Text == "Final" then
+				if turn2 == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(47, 4, -1205)
+					turn2 = false
 				end
 			end
 		end
