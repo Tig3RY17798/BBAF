@@ -1,0 +1,337 @@
+-- E Tower AF V4
+
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local AFStat = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local status = Instance.new("TextButton")
+
+--Properties:
+
+AFStat.Name = "AFStat"
+AFStat.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+AFStat.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+AFStat.ResetOnSpawn = false
+
+Frame.Parent = AFStat
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Position = UDim2.new(0.431935251, 0, 0.0405616201, 0)
+Frame.Size = UDim2.new(0, 185, 0, 68)
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Size = UDim2.new(0, 185, 0, 31)
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.Text = "AF Stat"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextSize = 23.000
+
+UICorner.Parent = Frame
+
+status.Name = "status"
+status.Parent = Frame
+status.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+status.BackgroundTransparency = 1.000
+status.Position = UDim2.new(0, 0, 0.455882341, 0)
+status.Size = UDim2.new(0, 185, 0, 37)
+status.Font = Enum.Font.SourceSansBold
+status.Text = "False"
+status.TextColor3 = Color3.fromRGB(0, 0, 0)
+status.TextSize = 40.000
+
+-- Scripts:
+
+local function RCBKZ_fake_script() -- Frame.Dragify 
+	local script = Instance.new('LocalScript', Frame)
+
+	local UIS = game:GetService("UserInputService")
+	function dragify(Frame)
+	    dragToggle = nil
+	    local dragSpeed = 0.50
+	    dragInput = nil
+	    dragStart = nil
+	    local dragPos = nil
+	    function updateInput(input)
+	        local Delta = input.Position - dragStart
+	        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+	        game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.30), {Position = Position}):Play()
+	    end
+	    Frame.InputBegan:Connect(function(input)
+	        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+	            dragToggle = true
+	            dragStart = input.Position
+	            startPos = Frame.Position
+	            input.Changed:Connect(function()
+	                if input.UserInputState == Enum.UserInputState.End then
+	                    dragToggle = false
+	                end
+	            end)
+	        end
+	    end)
+	    Frame.InputChanged:Connect(function(input)
+	        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+	            dragInput = input
+	        end
+	    end)
+	    game:GetService("UserInputService").InputChanged:Connect(function(input)
+	        if input == dragInput and dragToggle then
+	            updateInput(input)
+	        end
+	    end)
+	end
+	
+	dragify(script.Parent)
+end
+coroutine.wrap(RCBKZ_fake_script)()
+local function ZZFYJWO_fake_script() -- Frame.LocalScript 
+	local script = Instance.new('LocalScript', Frame)
+
+	--Sound Activate
+	if not game.SoundService:FindFirstChild("SoundNotification") then
+		local notification = Instance.new("Sound")
+		notification.Volume = 1
+		notification.SoundId = "rbxassetid://261072074"
+		notification.Name = "SoundNotification"
+		notification.Parent = game.SoundService
+	end
+	
+	--Sound Deactivate
+	if not game.SoundService:FindFirstChild("SoundNtfFinish") then
+		local finishntf = Instance.new("Sound")
+		finishntf.Volume = 4
+		finishntf.SoundId = "rbxassetid://4841526900"
+		finishntf.Name = "SoundNtfFinish"
+		finishntf.Parent = game.SoundService
+	end
+
+	local turn = false
+	local turn2 = false
+	game:GetService("UserInputService").InputBegan:Connect(function(input)
+		if input.KeyCode == Enum.KeyCode.KeypadTwo then
+			if turn == false then
+				turn = true
+				game.SoundService:FindFirstChild("SoundNotification"):Play()
+				script.Parent.status.Text = "True"
+			elseif turn == true then
+				turn = false
+				game.SoundService:FindFirstChild("SoundNtfFinish"):Play()
+				script.Parent.status.Text = "False"
+				game.Workspace:FindFirstChild("EndPart"):Destroy()
+				if game.Players.LocalPlayer.PlayerGui.Headings.Frame.Tweet.Text == "Final" then
+					if turn2 == true then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(47, 4, -1205)
+						turn2 = false
+					end
+				end
+			end
+		end
+	end)
+
+	--funkcia na spustenie pre Android
+	script.Parent.status.MouseButton1Click:Connect(function()
+		if turn == false then
+			turn = true
+			game.SoundService:FindFirstChild("SoundNotification"):Play()
+			script.Parent.status.Text = "True"
+		elseif turn == true then
+			turn = false
+			game.SoundService:FindFirstChild("SoundNtfFinish"):Play()
+			script.Parent.status.Text = "False"
+			game.Workspace:FindFirstChild("EndPart"):Destroy()
+			if game.Players.LocalPlayer.PlayerGui.Headings.Frame.Tweet.Text == "Final" then
+				if turn2 == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(47, 4, -1205)
+					turn2 = false
+				end
+			end
+		end
+	end)
+	
+	game:GetService("Players").PlayerAdded:Connect(function(player_added)
+		if player_added.Name ~= "ceska4a" and player_added.Name ~= "ceska4b" and player_added.Name ~= "ceska4c" then
+			turn = false
+			script.Parent.status.Text = "False"
+			game.SoundService:FindFirstChild("SoundNtfFinish"):Play()
+			if game.Workspace:FindFirstChild("EndPart") then
+				game.Workspace:FindFirstChild("EndPart"):Destroy()
+			end
+			if game.Players.LocalPlayer.PlayerGui.Headings.Frame.Tweet.Text == "Final" then
+				if turn2 == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(47, 4, -1205)
+					turn2 = false
+				end
+			end
+		end
+	end)
+
+	game:GetService("UserInputService").InputBegan:Connect(function(input)
+		if input.KeyCode == Enum.KeyCode.KeypadZero then
+			if turn == true and game.Players.LocalPlayer.PlayerGui.Headings.Frame.Tweet.Text == "Final" then
+				game.Players.LocalPlayer.PlayerGui.UI.Speak.Speak.Speech.Text = "Good luck finalists!"
+				wait(1)
+				game.Players.LocalPlayer.PlayerGui.UI.Speak.Speak.Speech.Text = ""
+			end
+		end
+	end)
+
+	--Ked nikdo cudzi nieje na hre tak sa spusti skript
+	local myName = "TigerY17798" -- Nahraďte "VašeMeno" svojim menom
+	local allowedNames = { "ceska4a", "ceska4b", "ceska4c" } -- Sem pridajte mená vašich kamarátov
+
+	game:GetService("Players").PlayerRemoving:Connect(function(player_removed)
+        if player_removed.Name ~= "ceska4a" and player_removed.Name ~= "ceska4b" and player_removed.Name ~= "ceska4c" then
+			local allPlayers = game.Players:GetPlayers()
+            local foundAllowedPlayer = false
+
+            for _, player in ipairs(allPlayers) do
+                local playerName = player.Name
+
+                -- Skontrolujeme, či sa meno hráča nachádza medzi povolenými menami (vy alebo vaši kamaráti)
+                if playerName == myName or table.find(allowedNames, playerName) then
+                    foundAllowedPlayer = true
+                    break
+                end
+            end
+
+            -- Ak sme našli aspoň jednoho z povolených hráčov (vy alebo kamaráti), skontrolujeme, či sa v hre nenachádza iný cudzinec
+            if foundAllowedPlayer then
+                local foundOtherPlayer = false
+                for _, player in ipairs(allPlayers) do
+                    local playerName = player.Name
+
+                    -- Ak meno hráča nie je v zozname povolených mien (cudzinec), skript sa nespustí
+                    if playerName ~= myName and not table.find(allowedNames, playerName) then
+                        foundOtherPlayer = true
+                        break
+                    end
+                end
+
+                -- Ak sa v hre nenachádza iný cudzinec, spustíme kód
+                if not foundOtherPlayer then
+                    turn = true
+                    game.SoundService:FindFirstChild("SoundNotification"):Play()
+                    script.Parent.status.Text = "True"
+                end
+            end
+	    end
+	end)
+
+	
+	--local startfinalposition = nil
+	--startfinalposition = CFrame.new(47, 4, -1205)
+	game.Players.LocalPlayer.PlayerGui.UI.Speak.Speak.Speech.Changed:Connect(function() --game.Workspace.Sounds.Go.Changed:Connect(function()
+		if game.Players.LocalPlayer.PlayerGui.UI.Speak.Speak.Speech.Text == "Good luck finalists!" then --game.Workspace.Sounds.Go.Played:Connect(function()
+			if turn == true then
+				script.Parent.status.Text = "inprogress"
+				wait(4)
+				--vytvorenie partu pred koncom
+				if not game.Workspace:FindFirstChild("EndPart") then
+					local part = Instance.new("Part")
+					part.Name = "EndPart"
+					part.Anchored = true
+					part.Position = Vector3.new(42, 155, -836)
+					part.Size = Vector3.new(70, 1, 70)
+					part.Parent = game.Workspace
+				end
+				turn2 = true
+				--Teleport skripty
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(41, 4, -1188)
+				end 
+				wait(0.5)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(41, 4, -1089)
+				end
+				wait(0.5)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 29, -1029)
+				end
+				wait(0.5)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 29, -968)
+				end
+				wait(0.5)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 4, -902)
+				end
+				--go up Segment
+				wait(0.5)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 11, -837)
+				end			
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 24, -839)
+				end			
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 38, -839)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 54, -839)
+				end				
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 69, -839)
+				end				
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 81, -839)
+				end			
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 96, -839)
+				end			
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 110, -838)
+				end				
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 121, -838)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 133, -838)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 145, -838)
+				end			
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(43, 159, -837)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 158, -856)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 160, -869)
+				end	
+				wait(0.1)
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 160, -876)
+				end
+				wait(0.1)
+				--Finish position
+				if turn == true then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(42, 160, -883)
+				end
+				if turn2 == true then
+					turn2 = false
+					script.Parent.status.Text = "True"
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(ZZFYJWO_fake_script)()
